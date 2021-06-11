@@ -114,34 +114,8 @@ void skaitymas( vector<string> &links, map<string, zodis> &A, int &linec){
      open_f.close();
 }
 
-/*oid atrinklinks(vector<zodis> &A, vector<string> &links){
-    for(int i=0; i<A.size(); i++){
-       // cout<< A[i].name.substr(0, 4)<< endl;
-        if(A[i].name.substr(0, 8)=="https://" || A[i].name.substr(0, 4)=="www."){
-            links.push_back(A[i].name);
-            A.erase(A.begin()+i);
-            i--;
-        }
-    }    
-}*/
 
-/*void skaic(vector<zodis> &A){
-    for(int i=0; i<A.size(); i++){
-        for(int j=i+1; j<A.size(); j++){
-            if(A[i].name==A[j].name){
-                A[i].line.push_back(A[j].line[0]);
-                A[i].ocurence++;
-                A.erase(A.begin()+j);
-                j--;
-            }
-        }
-        if(A[i].ocurence<=1){
-            A.erase(A.begin()+i);
-            i--;
-        }
-    }
-}*/
-int distance(int prev, int eil){
+int tarpskaic(int prev, int eil){
     int sum=0;
         for(int i=prev; i<eil; i++){
         int n=to_string(i).length();
@@ -159,29 +133,33 @@ int main(){
     //atrinklinks(A, links);
     //stand(A);
    // skaic(A);
-    
-    cout << "zodziai"<< endl;
+    ofstream out_fcounter("counter.txt");
+    //cout << "zodziai"<< endl;
     for(auto zodis : A){
         if(zodis.second.ocurence>1){
-            cout<< zodis.first << " ";
-            cout << zodis.second.ocurence << " ";
+            out_fcounter<< zodis.first << " ";
+            out_fcounter << zodis.second.ocurence ;
            /* for(auto line : zodis.second.line){
             cout << line << " ";
         }*/
-        cout << endl;
+        out_fcounter << endl;
        }
         
     }
-    cout << "nuorodos"<< endl;
+    ofstream out_flinks("links.txt");
+  //  cout << "nuorodos"<< endl;
     for(int i=0; i<links.size(); i++){
-        cout << links[i] << endl;
+        out_flinks<< links[i] << endl;
     }
-    cout <<setw(15) << left <<"zodis"  ;
+
+
+    ofstream out_ftable("table.txt");
+    out_ftable <<setw(15) << left <<"zodis"  ;
     for(int i=0; i<linec; i++){
-        cout <<  i+1 <<  " ";
+        out_ftable <<  i+1 <<  " ";
     }
-    cout << endl;
-    cout << endl;
+    out_ftable << endl;
+    out_ftable << endl;
     int atimti;
     int prev;
 
@@ -189,25 +167,25 @@ int main(){
     
      for(auto zodis: A){
          if(zodis.second.ocurence>1){
-        cout <<setw(15)<< left <<zodis.first ;
+        out_ftable <<setw(15)<< left <<zodis.first ;
         int i=0;
         for(auto eil : zodis.second.line){
                 if(i==0){
                     atimti=1;
-                    cout <<  string(distance(atimti, eil), ' ') <<"*";
+                    out_ftable <<  string(tarpskaic(atimti, eil), ' ') <<"*";
                 }
                 else{
                     atimti=prev;
-                    cout <<  string(distance(atimti, eil)-1, ' ') <<"*";
+                    out_ftable <<  string(tarpskaic(atimti, eil)-1, ' ') <<"*";
                 }
            
                 prev=eil;
                 i++;
         }
-        cout << endl;}
+        out_ftable << endl;}
     }
 
-    cout << endl;
+    out_ftable << endl;
   
     
 }
